@@ -17,9 +17,11 @@ type listCommand struct {
 }
 
 func (c *listCommand) Run(s *options.Options) error {
-	password := ui.GetCurrentPassword(c.Username)
+	if len(c.Password) == 0 {
+		c.Password = ui.GetCurrentPassword(c.Username)
+	}
 
-	resp, err := api.Get(c.URL, listEndpoint, c.Proxy, c.Username, password)
+	resp, err := api.Get(c.URL, listEndpoint, c.Proxy, c.Username, c.Password)
 	if err != nil {
 		log.Fatal(err)
 	}

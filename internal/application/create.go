@@ -19,14 +19,16 @@ type createCommand struct {
 }
 
 func (c *createCommand) Run(s *options.Options) error {
-	password := ui.GetCurrentPassword(c.Username)
+	if len(c.Password) == 0 {
+		c.Password = ui.GetCurrentPassword(c.Username)
+	}
 
 	data := map[string]interface{}{
 		"name":                 c.Name,
 		"strict_compatibility": c.StrictCompatibility,
 	}
 
-	resp, err := api.Post(c.URL, createEndpoint, c.Proxy, c.Username, password, data)
+	resp, err := api.Post(c.URL, createEndpoint, c.Proxy, c.Username, c.Password, data)
 	if err != nil {
 		log.Fatal(err)
 	}

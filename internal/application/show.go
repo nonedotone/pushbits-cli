@@ -20,11 +20,13 @@ type showCommand struct {
 }
 
 func (c *showCommand) Run(s *options.Options) error {
-	password := ui.GetCurrentPassword(c.Username)
+	if len(c.Password) == 0 {
+		c.Password = ui.GetCurrentPassword(c.Username)
+	}
 
 	populatedEndpoint := fmt.Sprintf(showEndpoint, c.ID)
 
-	resp, err := api.Get(c.URL, populatedEndpoint, c.Proxy, c.Username, password)
+	resp, err := api.Get(c.URL, populatedEndpoint, c.Proxy, c.Username, c.Password)
 	if err != nil {
 		log.Fatal(err)
 	}

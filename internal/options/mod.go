@@ -9,5 +9,6 @@ type Options struct {
 type AuthOptions struct {
 	URL      string `name:"url" help:"The URL where the server listens for requests" required:""`
 	Username string `name:"username" help:"The username for authenticating on the server" required:""`
+	Password string `name:"password" help:"The password for authenticating on the server" required:""`
 	Proxy    string `name:"proxy" default:"" help:"The proxy to use for HTTP requests"`
 }

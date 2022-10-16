@@ -23,7 +23,9 @@ type updateCommand struct {
 }
 
 func (c *updateCommand) Run(s *options.Options) error {
-	password := ui.GetCurrentPassword(c.Username)
+	if len(c.Password) == 0 {
+		c.Password = ui.GetCurrentPassword(c.Username)
+	}
 
 	if !c.RefreshToken && c.StrictCompatibility {
 		log.Fatal("Can only enforce compatibility when refreshing the token of the application")
@@ -40,7 +42,7 @@ func (c *updateCommand) Run(s *options.Options) error {
 
 	populatedEndpoint := fmt.Sprintf(updateEndpoint, c.ID)
 
-	resp, err := api.Put(c.URL, populatedEndpoint, c.Proxy, c.Username, password, data)
+	resp, err := api.Put(c.URL, populatedEndpoint, c.Proxy, c.Username, c.Password, data)
 	if err != nil {
 		log.Fatal(err)
 	}
